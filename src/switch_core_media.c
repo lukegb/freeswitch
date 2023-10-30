@@ -8912,6 +8912,7 @@ SWITCH_DECLARE(switch_status_t) switch_core_media_activate_rtp(switch_core_sessi
 			}
 		}
 
+
 		if (!zstr(a_engine->local_dtls_fingerprint.str) && switch_rtp_has_dtls() && dtls_ok(smh->session)) {
 			dtls_type_t xtype, dtype = a_engine->dtls_controller ? DTLS_TYPE_CLIENT : DTLS_TYPE_SERVER;
 
@@ -10297,6 +10298,10 @@ SWITCH_DECLARE(void) switch_core_media_gen_local_sdp(switch_core_session_t *sess
 			smh->mparams->rtcp_audio_interval_msec = SWITCH_RTCP_AUDIO_INTERVAL_MSEC;
 			smh->mparams->rtcp_video_interval_msec = SWITCH_RTCP_VIDEO_INTERVAL_MSEC;
 		}
+
+        if (switch_true(switch_channel_get_variable(session->channel, "rtp_avpf_moz"))) {
+			switch_channel_set_flag(session->channel, CF_AVPF_MOZ);
+        }
 
 		if (switch_true(switch_channel_get_variable(session->channel, "add_ice_candidates"))) {
 			switch_channel_set_flag(session->channel, CF_ICE);
